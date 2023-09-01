@@ -1,0 +1,75 @@
+version: '3'
+
+services:
+    mariadb:
+        image: mariadb
+        container_name: mariadb             # Container name
+        build:
+          context: ./requirements/mariadb   # Where to find Dockerfile
+          dockerfile: Dockerfile            # Dockerfile name
+        env_file: .env                      # Env-file where variables are
+        volumes:                            # This one is treated below
+          - mariadb:/var/lib/mysql
+        restart: unless-stopped             # Restart until it is stopped (cf the difference with 'always')
+        expose:                             # Port to expose
+          - "3306"
+        networks:
+          - inception                       # Which network it belongs to
+
+    nginx:
+      image: nginx
+    		container_name: nginx
+    		build: 
+    		  context: ./requirements/nginx
+    		  dockerfile: Dockerfile
+    		depends_on:        			            # That means NGINX will wait for Wordpress before starting
+    		  - wordpress
+    		env_file: .env
+    		volumes:
+    	  	- wordpress:/var/www/wordpress
+    		restart: on-failure 		            # Container will restart after it crashes
+    		ports:
+    		  - "443:443" 		                  # Port that will be exposed at the local machine
+    		networks:
+    		  - inception
+
+    wordpress:
+        image: wordpress
+        	container_name: wordpress
+        	env_file: .env
+        	volumes:
+        	  - wordpress:/var/www/wordpress
+        	build: 
+        	  context: ./requirements/wordpress
+        	  dockerfile: Dockerfile
+        	depends_on:    					            # WordPress will start only after MariaDB (Otherwise it will not be able to configure databse)
+        	  - mariadb
+        	restart: on-failure
+        	expose: 
+        	  - "9000"
+        	networks:
+        	  - inception
+
+# Configure 2 volumes for Wordpress and mariaDB (for persistance)
+# They are my local storage
+# These volunes can be found in /home/login/data of the hosst machine which uses Docker
+volumes:
+	wordpress:
+		driver: local                         # We store here the volume in local
+		driver_opts:
+		type: 'none' 									        # no type is specified ?!
+		o: 'bind
+		device: '/Users/ccouliba/data/wordpress' # The location of the storage in the machine in local
+	mariadb:
+		driver: local
+		driver_opts:
+		type: 'none' 
+		o: 'bind'
+        # Bind are volumes that are mounted on the pathway to the host
+        # They can be changed by other process outside the docker or stored in the local machine
+		device: '/Users/ccouliba/data/mariadb'
+
+networks:
+	inception:
+        name: inception
+	    driver: bridge     # This tells docker to automatically install the rules that allow a communication between the 3 dockers, like a bridge does

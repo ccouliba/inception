@@ -1,0 +1,34 @@
+#www.conf
+
+[www] = This defines a new pool named "www". Multiple pools with different configurations in a single PHP-FPM instance.
+
+[user] = Specifies the user under which the PHP-FPM worker processes will run.
+    In this case, it's "www-data".
+
+[group] = Specifies the group under which the PHP-FPM worker processes will run.
+    In this case, it's also "www-data".
+
+[listen] = Defines the address and port number or socket path where PHP-FPM will listen for incoming requests.
+    In this case, it listens on port 9000.
+
+[listen.owner] & [listen.group] = Sets the ownership of the listening socket to the "www-data" user and group.
+
+[pm] = The process manager (pm) mode is set to "dynamic". This means that PHP-FPM will dynamically adjust the number of worker processes based on the current load.
+
+[pm.max_children] = The maximum number of PHP-FPM worker processes allowed for this pool.
+    In this case, there can be up to 5 worker processes.
+
+[pm.start_servers] = The number of worker processes to start when PHP-FPM starts up.
+    In this case, 2 worker processes will be started.
+
+[pm.min_spare_servers] = The minimum number of idle (spare) worker processes that should be available.
+    If there are fewer than this, PHP-FPM will create new worker processes.
+
+[pm.max_spare_servers] = The maximum number of idle (spare) worker processes allowed.
+    If there are more than this, PHP-FPM will kill some of the worker processes.
+
+[pm.max_requests] = The maximum number of requests each worker process can serve before it is terminated and replaced by a new worker process.
+    This helps prevent memory leaks and other issues that may arise from long-running processes.
+
+[clear_env] = Specifies whether to clear environment variables for each worker process.
+    By setting this to "no", the worker processes will inherit the environment variables from the PHP-FPM process.

@@ -1,0 +1,35 @@
+## DATABASE script (cf ./conf/50-server.cnf)
+
+[server]: This is the start of the `server` configuration block
+        which indicates that the following options apply to the MariaDB/MySQL server as a whole.
+
+[mysqld]: This is the start of the mysqld configuration block
+        which indicates that the following options apply specifically to the MySQL/MariaDB server process. 
+
+[user]: This option specifies the user account that the MySQL/MariaDB server should run as.
+        In this case, the value is set to mysql. 
+
+[port]: This option sets the TCP port number that the MariaDB/MySQL server will listen on for incoming client connections.
+        In this case, the value is set to 3306, which is the default port number.
+
+[basedir]: This option specifies the base directory for the MariaDB/MySQL installation.
+        In this case, the value is set to /usr.
+
+[datadir]: This option specifies the directory where the MariaDB/MySQL server should store its data files.
+        In this case, the value is set to /var/lib/mysql.
+
+[pid-file]: This option specifies the location of the PID file for the MariaDB/MySQL server.
+        The PID file is used to store the process ID of the server process.
+        In this case, the value is set to /var/run/mysqld/mysqld.pid.
+
+[socket]: This option specifies the location of the Unix socket file that the MariaDB/MySQL server should use for local connections.
+        In this case, the value is set to /var/run/mysqld/mysqld.sock. 
+
+[skip_networking]: his option specifies whether to enable or disable networking support for the server.
+    Setting this option to off means that networking support is enabled.
+
+[max_allowed_packet]: This option sets the maximum packet size that the server can send or receive. 
+        In this case, the value is set to 64 megabytes. 
+
+[log_error]: This option specifies the location of the error log file for the MariaDB/MySQL server.
+        In this case, the value is set to /var/log/mysql/error.l.
