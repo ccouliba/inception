@@ -34,5 +34,4 @@ COPY ./tools/db_building.sh ./
 RUN chmod +x ./db_building.sh
 
 # Will launch mariadb (sort of CMD cmd of a dockerfile)
-# CAUTION : maybe will block the running of mariadb container if it is not commented
 ENTRYPOINT ["bash", "./db_building.sh"]
