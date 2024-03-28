@@ -9,20 +9,12 @@
 all: 
 	mkdir -p /home/ccouliba/data/mariadb
 	mkdir -p /home/ccouliba/data/wordpress
-	docker compose -f ./srcs/docker-compose.yml build
-	docker compose -f ./srcs/docker-compose.yml up
-
-run:
-	docker compose -f ./srcs/docker-compose.yml up -d
-
-logs:
-	docker logs wordpress
-	docker logs mariadb
-	docker logs nginx
+	sudo docker-compose -f ./srcs/docker-compose.yml build
+	sudo docker-compose -f ./srcs/docker-compose.yml up -d
 
 clean:
-	docker container stop nginx mariadb wordpress
-	docker network rm inception
+	sudo docker container stop nginx mariadb wordpress
+	sudo docker network rm inception
 
 fclean: clean
 	@sudo rm -rf /home/ccouliba/data/mariadb/*
@@ -31,4 +23,4 @@ fclean: clean
 
 re: fclean all
 
-.Phony: all logs clean fclean
+.PHONY: all clean fclean
